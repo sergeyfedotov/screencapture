@@ -1,1 +1,4 @@
 ./idea
+*.suo
+bin/
+obj/
