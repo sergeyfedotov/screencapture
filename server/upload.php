@@ -16,7 +16,10 @@ if (false === ($input = @fopen('php://input', 'rb'))) {
 }
 
 $baseName = uniqid();
-$dirName = UPLOAD_DIR . '/' . substr($baseName, 0, 3);
+$basePath = substr($baseName, 0, 3);
+$fileName = substr($baseName, 3) . '.png';
+
+$dirName = UPLOAD_DIR . '/' . $basePath;
 
 if (!is_dir($dirName)) {
     if (!mkdir($dirName, 0755)) {
@@ -25,8 +28,7 @@ if (!is_dir($dirName)) {
     }
 }
 
-$fileName = $baseName . '.png';
-$filePath = $dirName . '/' . substr($fileName, 3);
+$filePath = $dirName . '/' . $fileName;
 
 if (false === ($output = @fopen($filePath, 'wb'))) {
     http_response_code(500);
@@ -40,4 +42,4 @@ if (false === stream_copy_to_stream($input, $output)) {
 
 fclose($output);
 
-printf(IMAGE_URL, $fileName);
+printf(IMAGE_URL, $basePath . '/' . $fileName);
